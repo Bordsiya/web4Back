@@ -17,7 +17,6 @@ public class DotDTO {
     @NotNull (message = "x не должен быть пустым")
     private double x;
 
-    @Digits(integer = 1, fraction = 0)
     @Min(-5)
     @Max(3)
     @NotNull (message = "y не должен быть пустым")

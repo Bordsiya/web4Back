@@ -54,15 +54,15 @@ public class DotEntity {
     }
 
     private boolean checkCircle() {
-        return x <= 0 && x >= -r/2 && y <= 0 && x * x + y * y <= (r/2) * (r/2);
+        return x >= 0 && x <= r/2 && y >= 0 && x * x + y * y <= (r/2) * (r/2);
     }
 
     private boolean checkTriangle() {
-        return x >= 0 && x <= r && y >= 0 && y <= -x/2 + r/2;
+        return x <= 0 && x >= -r && y >= 0 && y <= x/2 + r/2;
     }
 
     private boolean checkRectangle() {
-        return x <= 0 && x >= -r && y >= 0 && y <= r;
+        return x >= 0 && x <= r && y <= 0 && y >= -r/2;
     }
 
 }

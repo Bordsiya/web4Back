@@ -15,13 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping ("/users")
 public class UserController {
@@ -56,8 +54,12 @@ public class UserController {
     @PostMapping (value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public TokenDTO loginUser(@RequestBody @Valid UserDTO userDTO) throws UserNotFoundException, WrongPasswordException {
         UserEntity userFromDB = userService.findByLogin(userDTO.getLogin());
-        if (userFromDB == null) throw new UserNotFoundException("Пользователь с таким логином не найден в бд: " + userDTO.getLogin());
-        else if (!passwordEncoder.matches(userDTO.getPassword(), userFromDB.getPassword())) throw new WrongPasswordException("Введен неправильный пароль");
+        if (userFromDB == null) {
+            throw new UserNotFoundException("Пользователь с таким логином не найден в бд: " + userDTO.getLogin());
+        }
+        else if (!passwordEncoder.matches(userDTO.getPassword(), userFromDB.getPassword())) {
+            throw new WrongPasswordException("Введен неправильный пароль");
+        }
         else {
             String token = jwtTokenProvider.createToken(userDTO.getLogin());
             return new TokenDTO(token);
